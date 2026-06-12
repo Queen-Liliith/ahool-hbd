@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Balloons for Ahool</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #050914 0%, #0b1528 50%, #18233c 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Фоновые мерцающие звезды для атмосферы ночного неба */
+        .bg-stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .interface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        header, footer {
+            pointer-events: auto;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            letter-spacing: 3px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255,154,158,0.3);
+        }
+
+        header p {
+            color: #8fa0b5;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        #sky-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+
+        /* Стилизация воздушного шара */
+        .balloon {
+            position: absolute;
+            width: 85px;
+            height: 100px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            cursor: pointer;
+            box-shadow: inset -8px -8px 20px rgba(0,0,0,0.3), 0 10px 25px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease, opacity 0.5s ease;
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Корзинка шара */
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -18px;
+            width: 14px;
+            height: 12px;
+            background: #7a5032;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* Веревочки к корзинке */
+        .balloon::before {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            width: 16px;
+            height: 8px;
+            border-left: 1px solid rgba(255,255,255,0.6);
+            border-right: 1px solid rgba(255,255,255,0.6);
+            transform: perspective(5px) rotateX(20deg);
+        }
+
+        /* Аватарка внутри шара */
+        .balloon-avatar {
+            position: absolute;
+            top: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255,255,255,0.8);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .balloon-name {
+            position: absolute;
+            bottom: -40px;
+            font-size: 0.85rem;
+            color: #fff;
+            background: rgba(11, 21, 40, 0.8);
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Кастомные цвета для разнообразия шаров */
+        .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
+        .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
+        .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
+        .balloon.color-4 { background: radial-gradient(circle at 30% 30%, #b31217, #e52d27); }
+        .balloon.color-5 { background: radial-gradient(circle at 30% 30%, #8e2de2, #4a00e0); }
+
+        /* Окно воспоминания (Капсула времени) */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 420px;
+            background: rgba(15, 26, 48, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(15px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-title h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-title span {
+            font-size: 0.85rem;
+            color: #ff9a9e;
+            font-weight: 500;
+        }
+
+        .modal-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #e3e9f0;
+            font-style: italic;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 3px solid #ff9a9e;
+            white-space: pre-wrap;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #6c7d93;
+            font-size: 1.7rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: #fff; }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.7);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        footer {
+            color: #5c6f84;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-stars"></div>
+
+    <script>
+        // БАЗА ДАННЫХ ДЛЯ ШАРОВ
+        const BALLOONS_DATA = [
+            { 
+                name: "Ahool 🎂", 
+                role: "The Birthday Boy", 
+                text: "Welcome to your capsule of memories! Every balloon drifting here holds a piece of our 3-year journey. Click them to open.", 
+                img: "https://img.freepik.com/free-photo/cute-cat-autumn-season_23-2151833360.jpg?semt=ais_hybrid&w=740&q=80",
+                colorClass: "color-1"
+            },
+            { 
+                name: "Lillith", 
+                role: "Co-pilot & Friend", 
+                text: "Three years in the same space, and it honestly flew by like a second. Thank you for always being the most reliable person to talk to when everything else was total chaos. Keeping this capsule safe for you!", 
+                img: "https://cdn.mamazin.com.ua/img/products_pictures/large_20240308235708607722.jpg",
+                colorClass: "color-2"
+            }
+        ];
+    </script>
+
+    <div id="sky-container"></div>
+
+    <div class="interface">
+        <header>
+            <h1>Capsule of Memories</h1>
+            <p>3 years together. Click on any balloon to release a memory.</p>
+        </header>
+
+        <footer>
+            MADE WITH LOVE • KEEPING THE MOMENTS ALIVE
+        </footer>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div class="modal" id="modal">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <div class="modal-header">
+            <div class="modal-avatar" id="modal-avatar"></div>
+            <div class="modal-title">
+                <h3 id="modal-name">Name</h3>
+                <span id="modal-role">Role</span>
+            </div>
+        </div>
+        <div class="modal-text" id="modal-text">Memory...</div>
+    </div>
+
+    <script>
+        const sky = document.getElementById('sky-container');
+        let activeBalloonElement = null;
+
+        function createBalloons() {
+            sky.innerHTML = '';
+            
+            BALLOONS_DATA.forEach((data, index) => {
+                const balloon = document.createElement('div');
+                // Рандомный цвет из классов, если не задан жестко
+                balloon.className = `balloon ${data.colorClass || 'color-2'}`;
+                
+                // Распределяем шары по горизонтали
+                const spacing = 100 / (BALLOONS_DATA.length + 1);
+                let startX = spacing * (index + 1);
+                
+                // Стартовая позиция по вертикали (чуть ниже экрана)
+                let currentY = window.innerHeight + 150 + (index * 60); 
+                
+                balloon.style.left = `${startX}%`;
+                balloon.style.top = `${currentY}px`;
+
+                // Вставляем аватарку
+                const avatar = document.createElement('div');
+                avatar.className = 'balloon-avatar';
+                avatar.style.backgroundImage = `url('${data.img}')`;
+                balloon.appendChild(avatar);
+
+                // Вставляем имя
+                const nameTag = document.createElement('div');
+                nameTag.className = 'balloon-name';
+                nameTag.innerText = data.name;
+                balloon.appendChild(nameTag);
+
+                // Логика анимации полета (у каждого своя скорость и покачивание)
+                const speed = 0.6 + Math.random() * 0.4; // Медленная скорость
+                const swingRange = 15 + Math.random() * 20; // Амплитуда покачивания
+                const swingSpeed = 0.01 + Math.random() * 0.01; // Скорость покачивания
+                let angle = Math.random() * 100;
+
+                function floatUp() {
+                    // Если этот шар сейчас открыт в модальном окне, останавливаем его полет
+                    if (activeBalloonElement === balloon) {
+                        requestAnimationFrame(floatUp);
+                        return;
+                    }
+
+                    currentY -= speed;
+                    angle += swingSpeed;
+                    
+                    // Эффект покачивания влево-вправо от ветра
+                    const xOffset = Math.sin(angle) * swingRange;
+
+                    balloon.style.transform = `translateX(${xOffset}px)`;
+                    balloon.style.top = `${currentY}px`;
+
+                    // Если шар полностью улетел наверх, возвращаем его снизу
+                    if (currentY < -180) {
+                        currentY = window.innerHeight + 150;
+                    }
+
+                    requestAnimationFrame(floatUp);
+                }
+
+                balloon.onclick = (e) => {
+                    e.stopPropagation();
+                    openModal(data, balloon);
+                };
+
+                sky.appendChild(balloon);
+                requestAnimationFrame(floatUp);
+            });
+        }
+
+        function openModal(data, element) {
+            activeBalloonElement = element;
+
+            // Плавно перемещаем выбранный шар по центру, пока открыто воспоминание
+            element.style.transition = "all 0.5s ease";
+            element.style.top = "35%";
+            element.style.left = "50%";
+            element.style.transform = "translate(-50%, -50%) scale(1.3)";
+            element.style.zIndex = "101";
+
+            document.getElementById('modal-name').innerText = data.name;
+            document.getElementById('modal-role').innerText = data.role;
+            document.getElementById('modal-text').innerText = data.text;
+            document.getElementById('modal-avatar').style.backgroundImage = `url('${data.img}')`;
+
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeModal() {
+            if (activeBalloonElement) {
+                // Возвращаем шар в обычный поток полета
+                activeBalloonElement.style.transition = "transform 0.2s ease, opacity 0.5s ease";
+                activeBalloonElement.style.zIndex = "5";
+                
+                // Даем ему небольшую задержку перед тем, как он снова полетит снизу экрана
+                const rect = activeBalloonElement.getBoundingClientRect();
+                // Сбрасываем его позицию чуть ниже текущей, чтобы не было резкого скачка
+                activeBalloonElement.style.left = `${(rect.left / window.innerWidth) * 100}%`;
+                
+                activeBalloonElement = null;
+            }
+
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        window.onload = () => {
+            createBalloons();
+        };
+    </script>
+</body>
+</html>
