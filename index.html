@@ -16,7 +16,6 @@
             position: relative;
         }
 
-        /* Фоновые мерцающие звезды для атмосферы ночного неба */
         .bg-stars {
             position: absolute;
             width: 100%;
@@ -77,7 +76,6 @@
             z-index: 5;
         }
 
-        /* Стилизация воздушного шара */
         .balloon {
             position: absolute;
             width: 85px;
@@ -92,7 +90,6 @@
             align-items: center;
         }
 
-        /* Корзинка шара */
         .balloon::after {
             content: "";
             position: absolute;
@@ -104,7 +101,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* Веревочки к корзинке */
         .balloon::before {
             content: "";
             position: absolute;
@@ -116,7 +112,6 @@
             transform: perspective(5px) rotateX(20deg);
         }
 
-        /* Аватарка внутри шара */
         .balloon-avatar {
             position: absolute;
             top: 15px;
@@ -142,14 +137,12 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Кастомные цвета для разнообразия шаров */
         .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
         .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
         .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
         .balloon.color-4 { background: radial-gradient(circle at 30% 30%, #b31217, #e52d27); }
         .balloon.color-5 { background: radial-gradient(circle at 30% 30%, #8e2de2, #4a00e0); }
 
-        /* Окно воспоминания (Капсула времени) */
         .modal {
             position: fixed;
             top: 50%;
@@ -262,7 +255,6 @@
     <div class="bg-stars"></div>
 
     <script>
-        // БАЗА ДАННЫХ ДЛЯ ШАРОВ
         const BALLOONS_DATA = [
             { 
                 name: "Ahool 🎂", 
@@ -310,63 +302,65 @@
     <script>
         const sky = document.getElementById('sky-container');
         let activeBalloonElement = null;
+        const activeStateMap = new Map(); // Хранилище позиций для каждого шара
 
         function createBalloons() {
             sky.innerHTML = '';
             
             BALLOONS_DATA.forEach((data, index) => {
                 const balloon = document.createElement('div');
-                // Рандомный цвет из классов, если не задан жестко
                 balloon.className = `balloon ${data.colorClass || 'color-2'}`;
                 
-                // Распределяем шары по горизонтали
+                // Равномерное распределение по ширине
                 const spacing = 100 / (BALLOONS_DATA.length + 1);
                 let startX = spacing * (index + 1);
                 
-                // Стартовая позиция по вертикали (чуть ниже экрана)
-                let currentY = window.innerHeight + 150 + (index * 60); 
+                // Стартуют снизу за пределами экрана с небольшой задержкой очереди
+                let currentY = window.innerHeight + 150 + (index * 40); 
                 
+                // Целевая точка остановки (случайная высота в верхней трети экрана)
+                const stopY = 140 + Math.random() * 120; 
+
                 balloon.style.left = `${startX}%`;
                 balloon.style.top = `${currentY}px`;
 
-                // Вставляем аватарку
                 const avatar = document.createElement('div');
                 avatar.className = 'balloon-avatar';
                 avatar.style.backgroundImage = `url('${data.img}')`;
                 balloon.appendChild(avatar);
 
-                // Вставляем имя
                 const nameTag = document.createElement('div');
                 nameTag.className = 'balloon-name';
                 nameTag.innerText = data.name;
                 balloon.appendChild(nameTag);
 
-                // Логика анимации полета (у каждого своя скорость и покачивание)
-                const speed = 0.6 + Math.random() * 0.4; // Медленная скорость
-                const swingRange = 15 + Math.random() * 20; // Амплитуда покачивания
-                const swingSpeed = 0.01 + Math.random() * 0.01; // Скорость покачивания
+                const speed = 0.8 + Math.random() * 0.5; 
+                const swingRange = 10 + Math.random() * 15; 
+                const swingSpeed = 0.01 + Math.random() * 0.01; 
                 let angle = Math.random() * 100;
 
+                // Сохраняем начальные настройки полета
+                activeStateMap.set(balloon, { currentY, startX, stopY });
+
                 function floatUp() {
-                    // Если этот шар сейчас открыт в модальном окне, останавливаем его полет
+                    // Если шар открыт в модальном окне, замораживаем анимацию
                     if (activeBalloonElement === balloon) {
                         requestAnimationFrame(floatUp);
                         return;
                     }
 
-                    currentY -= speed;
+                    let state = activeStateMap.get(balloon);
+
+                    // Летим вверх, пока не достигнем точки остановки стоп-линии
+                    if (state.currentY > state.stopY) {
+                        state.currentY -= speed;
+                    }
+
                     angle += swingSpeed;
-                    
-                    // Эффект покачивания влево-вправо от ветра
                     const xOffset = Math.sin(angle) * swingRange;
 
                     balloon.style.transform = `translateX(${xOffset}px)`;
-                    balloon.style.top = `${currentY}px`;
-
-                    // Если шар полностью улетел наверх, возвращаем его снизу
-                    if (currentY < -180) {
-                        currentY = window.innerHeight + 150;
-                    }
+                    balloon.style.top = `${state.currentY}px`;
 
                     requestAnimationFrame(floatUp);
                 }
@@ -384,11 +378,10 @@
         function openModal(data, element) {
             activeBalloonElement = element;
 
-            // Плавно перемещаем выбранный шар по центру, пока открыто воспоминание
-            element.style.transition = "all 0.5s ease";
-            element.style.top = "35%";
+            element.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            element.style.top = "40%";
             element.style.left = "50%";
-            element.style.transform = "translate(-50%, -50%) scale(1.3)";
+            element.style.transform = "translate(-50%, -50%) scale(1.35)";
             element.style.zIndex = "101";
 
             document.getElementById('modal-name').innerText = data.name;
@@ -402,15 +395,21 @@
 
         function closeModal() {
             if (activeBalloonElement) {
-                // Возвращаем шар в обычный поток полета
-                activeBalloonElement.style.transition = "transform 0.2s ease, opacity 0.5s ease";
-                activeBalloonElement.style.zIndex = "5";
+                const element = activeBalloonElement;
+                element.style.transition = "all 0.5s ease";
+                element.style.zIndex = "5";
                 
-                // Даем ему небольшую задержку перед тем, как он снова полетит снизу экрана
-                const rect = activeBalloonElement.getBoundingClientRect();
-                // Сбрасываем его позицию чуть ниже текущей, чтобы не было резкого скачка
-                activeBalloonElement.style.left = `${(rect.left / window.innerWidth) * 100}%`;
+                // Возвращаем шар ровно на то верхнее место, где он зафиксировался
+                const state = activeStateMap.get(element);
+                element.style.top = `${state.currentY}px`;
+                element.style.left = `${state.startX}%`;
+                element.style.transform = "translate(0, 0) scale(1)";
                 
+                // Убираем transition после возвращения, чтобы не ломать покачивание
+                setTimeout(() => {
+                    element.style.transition = "transform 0.2s ease, opacity 0.5s ease";
+                }, 500);
+
                 activeBalloonElement = null;
             }
 
