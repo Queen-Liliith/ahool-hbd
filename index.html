@@ -222,7 +222,6 @@
             margin-bottom: 15px;
         }
 
-        /* Стиль для картинок воспоминаний внутри модалки */
         .modal-inside-img {
             width: 100%;
             max-height: 280px;
@@ -231,6 +230,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             display: block;
+            cursor: zoom-in; /* Меняем курсор, чтобы было понятно, что можно кликнуть */
+            transition: transform 0.2s ease;
+        }
+
+        .modal-inside-img:hover {
+            transform: scale(1.02); /* Легкое увеличение при наведении */
         }
 
         .close-btn {
@@ -271,6 +276,43 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
         }
+
+        /* Стиль для полноэкранного просмотра картинок */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            cursor: zoom-out;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
     </style>
 </head>
 <body>
@@ -278,7 +320,6 @@
     <div class="bg-stars"></div>
 
     <script>
-        // Теперь поле называется insideImages, и сюда можно добавлять несколько ссылок через запятую в скобках [ ]
         const BALLOONS_DATA = [
             { 
                 name: "Ahool 🎂", 
@@ -304,7 +345,7 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                     "https://media.discordapp.net/attachments/1238257333767901184/1516649486150144030/IMG_0952.jpg?ex=6a336967&is=6a3217e7&hm=a8df35fa7fa99b5a1f3048c6a2a823716a99edc8c32e550c35788737138d6e7e&=&format=webp&width=928&height=920"
                 ], 
                 colorClass: "color-2"
-            } // Для добавления следующего человека: поставь тут запятую, скопируй шаблон и в поле insideImages: [] добавляй ссылки через запятую.
+            }
         ];
     </script>
 
@@ -332,7 +373,11 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
             </div>
         </div>
         <div class="modal-text" id="modal-text">Memory...</div>
-        <!-- Картинки теперь генерируются скриптом автоматически прямо сюда -->
+    </div>
+
+    <!-- Окно полноэкранного просмотра картинок (Lightbox) -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Fullscreen view">
     </div>
 
     <script>
@@ -426,11 +471,9 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                 document.getElementById('modal-avatar').style.display = "none";
             }
 
-            // УДАЛЯЕМ СТАРЫЕ КАРТИНКИ ПЕРЕД ОТКРЫТИЕМ НОВЫХ
             const existingImages = document.querySelectorAll('.modal-inside-img-dynamic');
             existingImages.forEach(img => img.remove());
 
-            // ГЕНЕРИРУЕМ ВСЕ КАРТИНКИ ИЗ МАССИВА КРАСИВО ДРУГ ПОД ДРУГОМ
             if (data.insideImages && data.insideImages.length > 0) {
                 data.insideImages.forEach(srcUrl => {
                     if (srcUrl.trim() !== "") {
@@ -438,6 +481,10 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                         newImg.src = srcUrl;
                         newImg.className = 'modal-inside-img modal-inside-img-dynamic';
                         newImg.style.marginTop = '15px';
+                        
+                        // Добавляем функцию открытия на весь экран при клике
+                        newImg.onclick = () => openLightbox(srcUrl);
+                        
                         document.getElementById('modal').appendChild(newImg);
                     }
                 });
@@ -467,6 +514,18 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
 
             document.getElementById('modal').classList.remove('active');
             document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Функции для управления полноэкранным режимом картинок
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
         }
 
         window.onload = () => {
