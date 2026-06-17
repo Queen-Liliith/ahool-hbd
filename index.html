@@ -90,10 +90,11 @@
             align-items: center;
         }
 
+        /* Корзинка опущена ниже */
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -22px;
+            bottom: -30px;
             width: 16px;  
             height: 14px;
             background: linear-gradient(135deg, #8a5a36, #5c3a21); 
@@ -101,15 +102,16 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.4);
         }
 
+        /* Ниточки стали длиннее и изящнее */
         .balloon::before {
             content: "";
             position: absolute;
-            bottom: -8px;
+            bottom: -16px;
             width: 16px;
-            height: 8px;
-            border-left: 1px solid rgba(255,255,255,0.6);
-            border-right: 1px solid rgba(255,255,255,0.6);
-            transform: perspective(5px) rotateX(20deg);
+            height: 16px;
+            border-left: 1px solid rgba(255,255,255,0.5);
+            border-right: 1px solid rgba(255,255,255,0.5);
+            transform: perspective(6px) rotateX(25deg);
         }
 
         .balloon-avatar {
@@ -124,9 +126,10 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
+        /* Имя опущено чуть ниже корзинки */
         .balloon-name {
             position: absolute;
-            bottom: -40px;
+            bottom: -50px;
             font-size: 0.85rem;
             color: #fff;
             background: rgba(11, 21, 40, 0.8);
@@ -137,14 +140,12 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Базовые цвета */
+        /* Цвета */
         .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
         .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
         .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
         .balloon.color-4 { background: radial-gradient(circle at 30% 30%, #b31217, #e52d27); }
         .balloon.color-5 { background: radial-gradient(circle at 30% 30%, #8e2de2, #4a00e0); }
-        
-        /* Новые цвета */
         .balloon.color-pink { background: radial-gradient(circle at 30% 30%, #ff758c, #ff7eb3); }
         .balloon.color-purple { background: radial-gradient(circle at 30% 30%, #da4453, #89216b); }
         .balloon.color-blue { background: radial-gradient(circle at 30% 30%, #3a7bd5, #3a6073); }
@@ -327,6 +328,7 @@
     <script>
         const BALLOONS_DATA = [
             { 
+                id: "ahool",
                 name: "Ahool 🎂", 
                 role: "The Birthday Boy", 
                 text: `Welcome to your capsule of memories! Every balloon drifting here holds a piece of our 3-year journey. Click them to open.`, 
@@ -335,6 +337,7 @@
                 colorClass: "color-1"
             },
             { 
+                id: "athena",
                 name: "ᴀᴛʜᴇɴᴀ", 
                 role: "",
                 text: `It’s hard to believe how many years we’ve been playing together, from our early days in Cil to finding our home in KRD/DRK and all our journeys we have gone on. We’ve made a lot of great memories along the way, like your days as our unofficial R3.5 before finally making the jump to the mod team.
@@ -352,6 +355,7 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                 colorClass: "color-pink"
             },
             { 
+                id: "blizzard",
                 name: "Blizzard", 
                 role: "Chilly boy", 
                 text: `Hi, Bro 😎 I really like your cool side. I hope you'll stick with us for a long time to come. Probably until your daughter will be a 20s?😂😂😂`, 
@@ -359,40 +363,38 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                 insideImages: [
                     "https://i.pinimg.com/736x/da/c8/1e/dac81e48cf461f26983d3612d4cd611f.jpg"
                 ], 
-                colorClass: "color-blue" /* Теперь шарик Близзарда красивого сине-голубого цвета */
+                colorClass: "color-blue"
             },
             { 
-    name: "Khan", 
-    role: "Game Guru & Foundry Whale Burner 🔥", 
-    text: `Happy Birthday, Ahool 🎉 I still remember our first conversation kicked off because I got distracted by your son’s adorable face as your pfp. Since then, I’ve come to know you as one of the kindest, most helpful people I’ve come across.
+                id: "khan",
+                name: "Khan", 
+                role: "Game Guru & Foundry Whale Burner 🔥", 
+                text: `Happy Birthday, Ahool 🎉 I still remember our first conversation kicked off because I got distracted by your son’s adorable face as your pfp. Since then, I’ve come to know you as one of the kindest, most helpful people I’ve come across.
 
 You’re my go-to Game Guru. I spam you for advice like you’re the in-game help desk, and somehow you explain everything with saint-level patience instead of blocking me 😂 That’s admirable and slightly concerning for your mental health 👀😂
 
 You’re an amazing friend, a top-tier guide, and a dad who somehow raises two cutie patooties while still being amazing here.
 
 Hope this year gives you more health, happiness, and love. And maybe less of me bugging you for tips. But no promises 😂 Stay blessed 🙌`, 
-    img: "", 
-    insideImages: [
-        ""
-    ], 
-    colorClass: "color-4"
-},
+                img: "", 
+                insideImages: [""], 
+                colorClass: "color-4"
+            },
             { 
-    name: "DucKing", 
-    role: "The Asian Trio", 
-    text: `It's hard to believe we've been playing together for over 2-years now.
+                id: "ducking",
+                name: "DucKing", 
+                role: "The Asian Trio", 
+                text: `It's hard to believe we've been playing together for over 2-years now.
 
 Somehow, despite living in different countries, we've spent countless hours laughing, grinding, and celebrating victories together. What started as a game became a friendship I genuinely value.
 
 Thanks for all the memories, the laughs, and the adventures. Looking forward to many more raids, bad decisions, and unforgettable moments together.
 
 Happy leveling in real life, my friend.`, 
-    img: "https://i.pinimg.com/736x/f4/28/b6/f428b6123bff054b20ed153e764e256f.jpg", 
-    insideImages: [
-        ""
-    ], 
-    colorClass: "color-5"
-}
+                img: "https://i.pinimg.com/736x/f4/28/b6/f428b6123bff054b20ed153e764e256f.jpg", 
+                insideImages: [""], 
+                colorClass: "color-5"
+            }
         ];
     </script>
 
@@ -438,12 +440,31 @@ Happy leveling in real life, my friend.`,
                 const balloon = document.createElement('div');
                 balloon.className = `balloon ${data.colorClass || 'color-2'}`;
                 
-                const spacing = 100 / (BALLOONS_DATA.length + 1);
-                let startX = spacing * (index + 1);
-                let currentY = window.innerHeight + 150 + (index * 40); 
-                const stopY = 140 + Math.random() * 120; 
+                let startX = 50; 
+                let stopY = 180; 
 
-                balloon.style.left = `${startX}%`;
+                // Выстраиваем кучку из 5 шаров (Азул строго по центру)
+                if (data.id === "ahool") {
+                    startX = 50;       
+                    stopY = 145; // Центр-верх кучки
+                } else if (data.id === "athena") {
+                    startX = 40;       
+                    stopY = 195; // Слева вверху
+                } else if (data.id === "blizzard") {
+                    startX = 60;       
+                    stopY = 190; // Справа вверху
+                } else if (data.id === "khan") {
+                    startX = 45;       
+                    stopY = 245; // Слева внизу
+                } else if (data.id === "ducking") {
+                    startX = 55;       
+                    stopY = 240; // Справа внизу
+                }
+
+                balloon.style.left = `calc(${startX}% - 42px)`;
+                
+                // Ускоренный старт: уменьшили стартовый отступ из-за экрана
+                let currentY = window.innerHeight + 60 + (index * 30); 
                 balloon.style.top = `${currentY}px`;
 
                 if (data.img && data.img.trim() !== "") {
@@ -460,8 +481,8 @@ Happy leveling in real life, my friend.`,
                 nameTag.innerText = data.name;
                 balloon.appendChild(nameTag);
 
-                const speed = 0.8 + Math.random() * 0.5; 
-                const swingRange = 10 + Math.random() * 15; 
+                const speed = 1.3 + Math.random() * 0.4; 
+                const swingRange = 5 + Math.random() * 6; 
                 const swingSpeed = 0.01 + Math.random() * 0.01; 
                 let angle = Math.random() * 100;
 
@@ -547,7 +568,7 @@ Happy leveling in real life, my friend.`,
                 
                 const state = activeStateMap.get(element);
                 element.style.top = `${state.currentY}px`;
-                element.style.left = `${state.startX}%`;
+                element.style.left = `calc(${state.startX}% - 42px)`;
                 element.style.transform = "translate(0, 0) scale(1)";
                 
                 setTimeout(() => {
