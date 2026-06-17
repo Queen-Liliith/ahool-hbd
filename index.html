@@ -88,9 +88,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            transform-style: preserve-3d; /* Позволяет z-index работать корректно внутри шара */
         }
 
-        /* Ниточки теперь ведут точно к углам корзинки-имени */
+        /* Ниточки теперь уходят НАДЁЖНО ПОД корзинку */
         .balloon::before {
             content: "";
             position: absolute;
@@ -100,7 +101,7 @@
             border-left: 1px solid rgba(255,255,255,0.4);
             border-right: 1px solid rgba(255,255,255,0.4);
             transform: perspective(10px) rotateX(20deg);
-            z-index: 1;
+            z-index: 1; /* Меньше, чем у корзинки */
         }
 
         .balloon-avatar {
@@ -113,10 +114,10 @@
             background-position: center;
             border: 2px solid rgba(255,255,255,0.8);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 2;
+            z-index: 3;
         }
 
-        /* Корзинка-имя: текст находится прямо внутри неё */
+        /* Корзинка-имя перекрывает ниточки сверху */
         .balloon-name {
             position: absolute;
             bottom: -32px; 
@@ -129,7 +130,7 @@
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
             border: 1px solid #4a2e19;
-            z-index: 2;
+            z-index: 4; /* Выше, чем ниточки, чтобы линии не наползали на текст */
         }
 
         /* Цвета шаров с объёмными градиентами */
@@ -372,7 +373,7 @@ You’re an amazing friend, a top-tier guide, and a dad who somehow raises two c
 Hope this year gives you more health, happiness, and love. And maybe less of me bugging you for tips. But no promises 😂 Stay blessed 🙌`, 
                 img: "", 
                 insideImages: [""], 
-                colorClass: "color-4"
+                colorClass: "color-yellow"
             },
             { 
                 id: "ducking",
@@ -437,7 +438,6 @@ Happy leveling in real life, my friend.`,
                 let startX = 50; 
                 let stopY = 180; 
 
-                // Выстраиваем более широкую гроздь, убираем наложения
                 if (data.id === "ahool") {
                     startX = 50;       
                     stopY = 140; 
