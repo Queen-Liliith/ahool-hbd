@@ -88,20 +88,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform-style: preserve-3d; /* Позволяет z-index работать корректно внутри шара */
+            transform-style: preserve-3d;
         }
 
-        /* Ниточки теперь уходят НАДЁЖНО ПОД корзинку */
+        /* ИСПРАВЛЕНО: Ниточки подняты выше к основанию шара */
         .balloon::before {
             content: "";
             position: absolute;
-            bottom: -18px;
+            bottom: -10px; /* Было -18px, подняли ближе к шару */
             width: 32px; 
-            height: 18px;
+            height: 25px; /* Слегка увеличили высоту, чтобы красиво дотягивались */
             border-left: 1px solid rgba(255,255,255,0.4);
             border-right: 1px solid rgba(255,255,255,0.4);
             transform: perspective(10px) rotateX(20deg);
-            z-index: 1; /* Меньше, чем у корзинки */
+            z-index: 1; 
         }
 
         .balloon-avatar {
@@ -117,7 +117,6 @@
             z-index: 3;
         }
 
-        /* Корзинка-имя перекрывает ниточки сверху */
         .balloon-name {
             position: absolute;
             bottom: -32px; 
@@ -130,10 +129,10 @@
             white-space: nowrap;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
             border: 1px solid #4a2e19;
-            z-index: 4; /* Выше, чем ниточки, чтобы линии не наползали на текст */
+            z-index: 4; 
         }
 
-        /* Цвета шаров с объёмными градиентами */
+        /* Цвета шаров */
         .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
         .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
         .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
@@ -373,7 +372,7 @@ You’re an amazing friend, a top-tier guide, and a dad who somehow raises two c
 Hope this year gives you more health, happiness, and love. And maybe less of me bugging you for tips. But no promises 😂 Stay blessed 🙌`, 
                 img: "", 
                 insideImages: [""], 
-                colorClass: "color-5"
+                colorClass: "color-2"
             },
             { 
                 id: "ducking",
