@@ -90,28 +90,17 @@
             align-items: center;
         }
 
-        /* Корзинка опущена ниже */
-        .balloon::after {
-            content: "";
-            position: absolute;
-            bottom: -30px;
-            width: 16px;  
-            height: 14px;
-            background: linear-gradient(135deg, #8a5a36, #5c3a21); 
-            border-radius: 3px; 
-            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-        }
-
-        /* Ниточки стали длиннее и изящнее */
+        /* Ниточки теперь ведут точно к углам корзинки-имени */
         .balloon::before {
             content: "";
             position: absolute;
-            bottom: -16px;
-            width: 16px;
-            height: 16px;
-            border-left: 1px solid rgba(255,255,255,0.5);
-            border-right: 1px solid rgba(255,255,255,0.5);
-            transform: perspective(6px) rotateX(25deg);
+            bottom: -18px;
+            width: 32px; 
+            height: 18px;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+            transform: perspective(10px) rotateX(20deg);
+            z-index: 1;
         }
 
         .balloon-avatar {
@@ -124,23 +113,26 @@
             background-position: center;
             border: 2px solid rgba(255,255,255,0.8);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 2;
         }
 
-        /* Имя опущено чуть ниже корзинки */
+        /* Корзинка-имя: текст находится прямо внутри неё */
         .balloon-name {
             position: absolute;
-            bottom: -50px;
-            font-size: 0.85rem;
-            color: #fff;
-            background: rgba(11, 21, 40, 0.8);
-            padding: 3px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            bottom: -32px; 
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(135deg, #8a5a36, #5c3a21); 
+            padding: 4px 10px;
+            border-radius: 4px; 
             white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid #4a2e19;
+            z-index: 2;
         }
 
-        /* Цвета */
+        /* Цвета шаров с объёмными градиентами */
         .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
         .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
         .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
@@ -149,6 +141,8 @@
         .balloon.color-pink { background: radial-gradient(circle at 30% 30%, #ff758c, #ff7eb3); }
         .balloon.color-purple { background: radial-gradient(circle at 30% 30%, #da4453, #89216b); }
         .balloon.color-blue { background: radial-gradient(circle at 30% 30%, #3a7bd5, #3a6073); }
+        .balloon.color-yellow { background: radial-gradient(circle at 30% 30%, #ffe066, #f5b041); }
+        .balloon.color-orange { background: radial-gradient(circle at 30% 30%, #ff9f43, #ee5253); }
 
         .modal {
             position: fixed;
@@ -378,7 +372,7 @@ You’re an amazing friend, a top-tier guide, and a dad who somehow raises two c
 Hope this year gives you more health, happiness, and love. And maybe less of me bugging you for tips. But no promises 😂 Stay blessed 🙌`, 
                 img: "", 
                 insideImages: [""], 
-                colorClass: "color-4"
+                colorClass: "color-yellow"
             },
             { 
                 id: "ducking",
@@ -391,7 +385,7 @@ Somehow, despite living in different countries, we've spent countless hours laug
 Thanks for all the memories, the laughs, and the adventures. Looking forward to many more raids, bad decisions, and unforgettable moments together.
 
 Happy leveling in real life, my friend.`, 
-                img: "https://i.pinimg.com/736x/f4/28/b6/f428b6123bff054b20ed153e764e256f.jpg", 
+                img: "https://media.discordapp.net/attachments/1238257333767901184/1516649486150144030/IMG_0952.jpg?ex=6a336967&is=6a3217e7&hm=a8df35fa7fa99b5a1f3048c6a2a823716a99edc8c32e550c35788737138d6e7e&=&format=webp&width=928&height=920", 
                 insideImages: [""], 
                 colorClass: "color-5"
             }
@@ -443,27 +437,26 @@ Happy leveling in real life, my friend.`,
                 let startX = 50; 
                 let stopY = 180; 
 
-                // Выстраиваем кучку из 5 шаров (Азул строго по центру)
+                // Выстраиваем более широкую гроздь, убираем наложения
                 if (data.id === "ahool") {
                     startX = 50;       
-                    stopY = 145; // Центр-верх кучки
+                    stopY = 140; 
                 } else if (data.id === "athena") {
-                    startX = 40;       
-                    stopY = 195; // Слева вверху
+                    startX = 34;       
+                    stopY = 195; 
                 } else if (data.id === "blizzard") {
-                    startX = 60;       
-                    stopY = 190; // Справа вверху
+                    startX = 66;       
+                    stopY = 190; 
                 } else if (data.id === "khan") {
-                    startX = 45;       
-                    stopY = 245; // Слева внизу
+                    startX = 40;       
+                    stopY = 255; 
                 } else if (data.id === "ducking") {
-                    startX = 55;       
-                    stopY = 240; // Справа внизу
+                    startX = 60;       
+                    stopY = 250; 
                 }
 
                 balloon.style.left = `calc(${startX}% - 42px)`;
                 
-                // Ускоренный старт: уменьшили стартовый отступ из-за экрана
                 let currentY = window.innerHeight + 60 + (index * 30); 
                 balloon.style.top = `${currentY}px`;
 
@@ -472,8 +465,6 @@ Happy leveling in real life, my friend.`,
                     avatar.className = 'balloon-avatar';
                     avatar.style.backgroundImage = `url('${data.img}')`;
                     balloon.appendChild(avatar);
-                } else {
-                    balloon.style.justifyContent = "center";
                 }
 
                 const nameTag = document.createElement('div');
@@ -482,7 +473,7 @@ Happy leveling in real life, my friend.`,
                 balloon.appendChild(nameTag);
 
                 const speed = 1.3 + Math.random() * 0.4; 
-                const swingRange = 5 + Math.random() * 6; 
+                const swingRange = 4 + Math.random() * 5; 
                 const swingSpeed = 0.01 + Math.random() * 0.01; 
                 let angle = Math.random() * 100;
 
