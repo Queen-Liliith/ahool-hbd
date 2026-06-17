@@ -476,21 +476,27 @@ Always yours, Queen. Glad you're here 👑🖤`,
                 let stopY = 180; 
 
                 if (data.id === "ahool") {
-                    startX = 50;       
-                    stopY = 140; 
-                } else if (data.id === "athena") {
-                    startX = 34;       
-                    stopY = 195; 
-                } else if (data.id === "blizzard") {
-                    startX = 66;       
-                    stopY = 190; 
-                } else if (data.id === "khan") {
-                    startX = 40;       
-                    stopY = 255; 
-                } else if (data.id === "ducking") {
-                    startX = 60;       
-                    stopY = 250; 
-                }
+    startX = 15; // Самый левый шар       
+    stopY = 140; 
+} else if (data.id === "athena") {
+    startX = 30; // Чуть правее       
+    stopY = 195; 
+} else if (data.id === "blizzard") {
+    startX = 45; // Ближе к центру       
+    stopY = 190; 
+} else if (data.id === "khan") {
+    startX = 60; // Правее центра       
+    stopY = 255; 
+} else if (data.id === "ducking") {
+    startX = 73; // Еще правее       
+    stopY = 250; 
+} else if (data.id === "History") {
+    startX = 86; // Предпоследний шар
+    stopY = 170;
+} else if (data.id === "Lilith") {
+    startX = 95; // Твой праздничный желтый шар будет красиво лететь с самого правого края       
+    stopY = 150; 
+}
 
                 balloon.style.left = `calc(${startX}% - 42px)`;
                 
