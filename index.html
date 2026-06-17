@@ -93,11 +93,11 @@
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -22px; /* Чуть опустили вниз, чтобы была видна "веревочка" */
-            width: 16px;   /* Сделали чуть изящнее */
+            bottom: -22px;
+            width: 16px;  
             height: 14px;
-            background: linear-gradient(135deg, #8a5a36, #5c3a21); /* Плетеный градиент вместо плоского цвета */
-            border-radius: 3px; /* Скруглили углы, чтобы была похожа на корзину */
+            background: linear-gradient(135deg, #8a5a36, #5c3a21); 
+            border-radius: 3px; 
             box-shadow: 0 3px 6px rgba(0,0,0,0.4);
         }
 
@@ -137,11 +137,16 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
+        /* Базовые цвета */
         .balloon.color-1 { background: radial-gradient(circle at 30% 30%, #ff5e62, #ff9966); }
         .balloon.color-2 { background: radial-gradient(circle at 30% 30%, #00b4db, #0083b0); }
         .balloon.color-3 { background: radial-gradient(circle at 30% 30%, #11998e, #38ef7d); }
         .balloon.color-4 { background: radial-gradient(circle at 30% 30%, #b31217, #e52d27); }
         .balloon.color-5 { background: radial-gradient(circle at 30% 30%, #8e2de2, #4a00e0); }
+        
+        /* Новые цвета по просьбе Афины */
+        .balloon.color-pink { background: radial-gradient(circle at 30% 30%, #ff758c, #ff7eb3); }
+        .balloon.color-purple { background: radial-gradient(circle at 30% 30%, #da4453, #89216b); }
 
         .modal {
             position: fixed;
@@ -230,12 +235,12 @@
             border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             display: block;
-            cursor: zoom-in; /* Меняем курсор, чтобы было понятно, что можно кликнуть */
+            cursor: zoom-in;
             transition: transform 0.2s ease;
         }
 
         .modal-inside-img:hover {
-            transform: scale(1.02); /* Легкое увеличение при наведении */
+            transform: scale(1.02);
         }
 
         .close-btn {
@@ -277,7 +282,6 @@
             letter-spacing: 2px;
         }
 
-        /* Стиль для полноэкранного просмотра картинок */
         .lightbox {
             position: fixed;
             top: 0;
@@ -330,7 +334,7 @@
                 colorClass: "color-1"
             },
             { 
-                name: "Athena", 
+                name: "ᴀᴛʜᴇɴᴀ", 
                 role: "",
                 text: `It’s hard to believe how many years we’ve been playing together, from our early days in Cil to finding our home in KRD/DRK and all our journeys we have gone on. We’ve made a lot of great memories along the way, like your days as our unofficial R3.5 before finally making the jump to the mod team.
 
@@ -344,18 +348,18 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                     "https://media.discordapp.net/attachments/1238257333767901184/1516649486531956807/IMG_0953.jpg?ex=6a336967&is=6a3217e7&hm=8915c190790f78dfbf4a535c96d0a91d8716380bcfdcef6c851489cccd5861c4&=&format=webp&width=648&height=920",
                     "https://media.discordapp.net/attachments/1238257333767901184/1516649486150144030/IMG_0952.jpg?ex=6a336967&is=6a3217e7&hm=a8df35fa7fa99b5a1f3048c6a2a823716a99edc8c32e550c35788737138d6e7e&=&format=webp&width=928&height=920"
                 ], 
-                colorClass: "color-2"
+                colorClass: "color-pink" /* Можно поменять на "color-purple", если фиолетовый понравится больше */
             },
             { 
-    name: "Blizzard", 
-    role: "Chilly boy", 
-    text: `Hi, Bro 😎 I really like your cool side. I hope you'll stick with us for a long time to come. Probably until your daughter will be a 20s?😂😂😂`, 
-    img: "", 
-    insideImages: [
-        "https://i.pinimg.com/736x/da/c8/1e/dac81e48cf461f26983d3612d4cd611f.jpg"
-    ], 
-    colorClass: "color-3"
-}
+                name: "Blizzard", 
+                role: "Chilly boy", 
+                text: `Hi, Bro 😎 I really like your cool side. I hope you'll stick with us for a long time to come. Probably until your daughter will be a 20s?😂😂😂`, 
+                img: "", 
+                insideImages: [
+                    "https://i.pinimg.com/736x/da/c8/1e/dac81e48cf461f26983d3612d4cd611f.jpg"
+                ], 
+                colorClass: "color-3"
+            }
         ];
     </script>
 
@@ -385,7 +389,6 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
         <div class="modal-text" id="modal-text">Memory...</div>
     </div>
 
-    <!-- Окно полноэкранного просмотра картинок (Lightbox) -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
         <img id="lightbox-img" src="" alt="Fullscreen view">
     </div>
@@ -492,7 +495,6 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
                         newImg.className = 'modal-inside-img modal-inside-img-dynamic';
                         newImg.style.marginTop = '15px';
                         
-                        // Добавляем функцию открытия на весь экран при клике
                         newImg.onclick = () => openLightbox(srcUrl);
                         
                         document.getElementById('modal').appendChild(newImg);
@@ -526,7 +528,6 @@ Selamat Ulang Tahun! Semoga someua impian terkabul. 🥳`,
             document.getElementById('overlay').classList.remove('active');
         }
 
-        // Функции для управления полноэкранным режимом картинок
         function openLightbox(src) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
