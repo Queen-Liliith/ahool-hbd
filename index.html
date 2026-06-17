@@ -93,12 +93,12 @@
         .balloon::after {
             content: "";
             position: absolute;
-            bottom: -18px;
-            width: 14px;
-            height: 12px;
-            background: #7a5032;
-            border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            bottom: -22px; /* Чуть опустили вниз, чтобы была видна "веревочка" */
+            width: 16px;   /* Сделали чуть изящнее */
+            height: 14px;
+            background: linear-gradient(135deg, #8a5a36, #5c3a21); /* Плетеный градиент вместо плоского цвета */
+            border-radius: 3px; /* Скруглили углы, чтобы была похожа на корзину */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
         }
 
         .balloon::before {
