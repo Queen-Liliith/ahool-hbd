@@ -425,7 +425,7 @@ Always yours, Queen. Glad you're here 👑🖤`,
     insideImages: [
         ""
     ], 
-    colorClass: "color-3"
+    colorClass: "color-2"
 }
         ];
     </script>
@@ -476,26 +476,26 @@ Always yours, Queen. Glad you're here 👑🖤`,
                 let stopY = 180; 
 
                 if (data.id === "ahool") {
-    startX = 15; // Самый левый шар       
-    stopY = 140; 
+    startX = 50;       
+    stopY = 120; // Самый верхний по центру
 } else if (data.id === "athena") {
-    startX = 30; // Чуть правее       
-    stopY = 195; 
+    startX = 41;       
+    stopY = 180; // Чуть левее и ниже
 } else if (data.id === "blizzard") {
-    startX = 45; // Ближе к центру       
-    stopY = 190; 
+    startX = 59;       
+    stopY = 190; // Чуть правее и ниже
 } else if (data.id === "khan") {
-    startX = 60; // Правее центра       
-    stopY = 255; 
+    startX = 35;       
+    stopY = 250; // Левый нижний край кучки
 } else if (data.id === "ducking") {
-    startX = 73; // Еще правее       
-    stopY = 250; 
+    startX = 65;       
+    stopY = 260; // Правый нижний край кучки
 } else if (data.id === "History") {
-    startX = 86; // Предпоследний шар
-    stopY = 170;
+    startX = 48;       
+    stopY = 295; // В самом низу по центру
 } else if (data.id === "Lilith") {
-    startX = 95; // Твой праздничный желтый шар будет красиво лететь с самого правого края       
-    stopY = 150; 
+    startX = 53;       
+    stopY = 220; // Твой желтый шар в самом сердце кучки, чуть выше нижних!
 }
 
                 balloon.style.left = `calc(${startX}% - 42px)`;
