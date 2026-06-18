@@ -477,25 +477,25 @@ Always yours, Queen. Glad you're here 👑🖤`,
 
                 if (data.id === "ahool") {
     startX = 50;       
-    stopY = 110; // Оставили на самом верху по центру
+    stopY = 120; // Вернули на исходную позицию на самом верху
 } else if (data.id === "athena") {
-    startX = 38;       
-    stopY = 180; 
+    startX = 41;       
+    stopY = 180; // Вернули на место
 } else if (data.id === "blizzard") {
-    startX = 64;       
-    stopY = 190; 
+    startX = 59;       
+    stopY = 190; // Вернули на место, теперь он справа от Ахула
 } else if (data.id === "khan") {
-    startX = 32;       
-    stopY = 260; 
+    startX = 35;       
+    stopY = 250; // Вернули в левую часть кучки
 } else if (data.id === "ducking") {
-    startX = 68;       
-    stopY = 270; 
+    startX = 65;       
+    stopY = 260; // Вернули в правую часть кучки
 } else if (data.id === "History") {
-    startX = 44;       
-    stopY = 310; // Опустили пониже и сдвинули влево, чтобы освободить место
+    startX = 45;       // Сдвинули чуть левее (было 48)
+    stopY = 320;       // Опустили пониже (было 295), чтобы освободить табличку
 } else if (data.id === "Lilith") {
-    startX = 57;       
-    stopY = 215; // Сдвинули твою карточку Queen чуть правее Ахула, теперь она встанет идеально
+    startX = 53;       // Вернули по центру, как на первом скрине
+    stopY = 245;       // Сделали пониже (было 220), чтобы он аккуратно встал под Ахула
 }
 
                 balloon.style.left = `calc(${startX}% - 42px)`;
