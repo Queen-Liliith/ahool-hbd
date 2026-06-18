@@ -325,7 +325,7 @@
                 id: "ahool",
                 name: "Ahool 🎂", 
                 role: "The Birthday Boy", 
-                text: `Welcome to your capsule of memories! Every balloon drifting here holds a piece of our 3-year journey. Click them to open.`, 
+                text: `Welcome to your capsule of memories! Every balloon drifting here holds a piece of our 3-year journey. Click them to open✨`, 
                 img: "https://img.freepik.com/free-photo/cute-cat-autumn-season_23-2151833360.jpg?semt=ais_hybrid&w=740&q=80",
                 insideImages: [], 
                 colorClass: "color-1"
@@ -477,25 +477,25 @@ Always yours, Queen. Glad you're here 👑🖤`,
 
                 if (data.id === "ahool") {
     startX = 50;       
-    stopY = 120; // Самый верхний по центру
+    stopY = 110; // Оставили на самом верху по центру
 } else if (data.id === "athena") {
-    startX = 41;       
-    stopY = 180; // Чуть левее и ниже
+    startX = 38;       
+    stopY = 180; 
 } else if (data.id === "blizzard") {
-    startX = 59;       
-    stopY = 190; // Чуть правее и ниже
+    startX = 64;       
+    stopY = 190; 
 } else if (data.id === "khan") {
-    startX = 35;       
-    stopY = 250; // Левый нижний край кучки
+    startX = 32;       
+    stopY = 260; 
 } else if (data.id === "ducking") {
-    startX = 65;       
-    stopY = 260; // Правый нижний край кучки
+    startX = 68;       
+    stopY = 270; 
 } else if (data.id === "History") {
-    startX = 48;       
-    stopY = 295; // В самом низу по центру
+    startX = 44;       
+    stopY = 310; // Опустили пониже и сдвинули влево, чтобы освободить место
 } else if (data.id === "Lilith") {
-    startX = 53;       
-    stopY = 220; // Твой желтый шар в самом сердце кучки, чуть выше нижних!
+    startX = 57;       
+    stopY = 215; // Сдвинули твою карточку Queen чуть правее Ахула, теперь она встанет идеально
 }
 
                 balloon.style.left = `calc(${startX}% - 42px)`;
